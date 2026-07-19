@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChurnShield — AI Churn Intelligence</title>
+<meta name="description" content="Upload your customer CSV. ChurnShield trains a deep neural network instantly, ranks every at-risk customer, and delivers actionable retention strategies.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+</head>
+<body>
+<div class="grid-bg" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+
+<!-- ═══════════════════════ VIEW: LANDING ═══════════════════════ -->
+<div id="view-landing" class="view active">
+
+  <nav id="main-nav">
+    <a class="nav-logo" href="#hero"><span class="nav-dot"></span>ChurnShield</a>
+    <ul class="nav-links">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#neural-viz">Architecture</a></li>
+      <li><a href="#cta">Get Started</a></li>
+    </ul>
+    <div class="nav-right">
+      <span class="nav-badge">ANN · 3 DENSE LAYERS</span>
+      <button class="nav-cta" data-goto="select">Upload Dataset →</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <div class="hero-label">AI-POWERED CHURN INTELLIGENCE</div>
+      <h1>Stop losing<br>customers<br>before they<br><span class="accent">leave.</span></h1>
+      <p class="hero-sub">Upload your dataset. ChurnShield trains a <strong>deep neural network instantly</strong>, ranks every at-risk customer, and delivers <strong>actionable retention strategies</strong>.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" data-goto="select">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          Analyse Your Data
+        </button>
+        <button class="btn-sec" onclick="document.getElementById('how').scrollIntoView({behavior:'smooth'})">
+          <span class="play-icon">▶</span> See how it works
+        </button>
+      </div>
+    </div>
+    <aside class="stat-cards">
+      <div class="sc danger"><div class="sc-lbl">High Risk Detected</div><div class="sc-val" id="counter-risk">0</div><div class="sc-sub"><span class="dot r"></span> customers need action</div><div class="sc-bar"><div class="sc-fill"></div></div></div>
+      <div class="sc success"><div class="sc-lbl">Model Accuracy</div><div class="sc-val" id="counter-acc">0%</div><div class="sc-sub"><span class="dot"></span> ANN · 3 Dense Layers</div><div class="sc-bar"><div class="sc-fill"></div></div></div>
+      <div class="sc info"><div class="sc-lbl">ROC AUC Score</div><div class="sc-val" id="counter-auc">0.000</div><div class="sc-sub"><span class="dot"></span> Excellent performance</div><div class="sc-bar"><div class="sc-fill"></div></div></div>
+    </aside>
+    <div class="scroll-hint"><span>SCROLL</span><div class="scroll-line"></div></div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section">
+    <div class="s-tag">How It Works</div>
+    <h2 class="s-title">Three steps to<br>zero churn surprises</h2>
+    <p class="s-desc">From raw CSV to actionable predictions in under 60 seconds. No ML expertise required.</p>
+    <div class="steps">
+      <article class="step"><div class="step-n">STEP 01</div><div class="step-ico ico-u">📂</div><h3 class="step-title">Upload Dataset</h3><p class="step-desc">Drop your customer CSV. Auto-detects features — usage, billing, support, demographics.</p><div class="step-tags"><span class="tag">CSV</span><span class="tag">Auto-detect</span><span class="tag">Feature engineering</span></div></article>
+      <article class="step"><div class="step-n">STEP 02</div><div class="step-ico ico-t">⚡</div><h3 class="step-title">AI Trains Instantly</h3><p class="step-desc">3-layer ANN with Dropout, BatchNorm and Adam optimizer trains in seconds.</p><div class="step-tags"><span class="tag">ANN</span><span class="tag">3 Dense Layers</span><span class="tag">~92% Accuracy</span></div></article>
+      <article class="step"><div class="step-n">STEP 03</div><div class="step-ico ico-p">🎯</div><h3 class="step-title">Get Predictions</h3><p class="step-desc">Every customer gets a risk score, churn probability, and 7 personalized retention actions.</p><div class="step-tags"><span class="tag">SHAP</span><span class="tag">Risk scoring</span><span class="tag">ROC 0.886</span></div></article>
+    </div>
+  </section>
+
+  <hr class="sep">
+
+  <!-- NEURAL VIZ -->
+  <section id="neural-viz">
+    <div class="nn-wrap"><canvas id="nn-canvas"></canvas><div class="nn-label">LIVE NEURAL NETWORK — ANN · 3 DENSE LAYERS</div></div>
+    <div class="ni">
+      <div class="s-tag">Model Architecture</div>
+      <h2>Deep neural<br>network built<br>for retention</h2>
+      <p>Each layer learns increasingly abstract customer behavior patterns — from raw usage to complex churn signals.</p>
+      <div class="arch-list">
+        <div class="ai"><span class="lb inp">INPUT</span><span class="ai-info"><strong>Feature Layer</strong> — customer attributes, usage, billing</span></div>
+        <div class="ai"><span class="lb hid">DENSE 1</span><span class="ai-info"><strong>64 neurons</strong> · ReLU · Dropout 0.3 · BatchNorm</span></div>
+        <div class="ai"><span class="lb hid">DENSE 2</span><span class="ai-info"><strong>32 neurons</strong> · ReLU · BatchNorm</span></div>
+        <div class="ai"><span class="lb hid">DENSE 3</span><span class="ai-info"><strong>16 neurons</strong> · ReLU activation</span></div>
+        <div class="ai"><span class="lb out">OUTPUT</span><span class="ai-info"><strong>Churn probability</strong> · Sigmoid · Binary cross-entropy</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta" class="cta-sec">
+    <h2 class="cta-h">Ready to stop<br>the leak?</h2>
+    <p class="cta-p">Upload your CSV and get AI-powered churn predictions in under 60 seconds.</p>
+    <button class="cta-btn" data-goto="select">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+      Select Your Dataset →
+    </button>
+  </section>
+
+  <footer>
+    <div class="fl">ChurnShield</div>
+    <div class="ft">Built with <span class="a">ANN · TensorFlow · FastAPI · HTML/JS</span></div>
+    <div class="ft">© 2026 ChurnShield. All rights reserved.</div>
+  </footer>
+</div>
+
+<!-- ═══════════════════════ VIEW: SELECT ═══════════════════════ -->
+<div id="view-select" class="view">
+  <div class="select-wrap">
+    <div class="top-badge">STEP 1 OF 2 — CHOOSE YOUR INDUSTRY</div>
+    <h1 class="select-h1">Select Your Dataset</h1>
+    <p class="select-sub">ChurnShield adapts its ANN architecture, preprocessing pipeline, and entire dashboard to your industry.</p>
+
+    <div class="industry-cards">
+      <!-- TELECOM -->
+      <article class="ic tel" id="card-telecom" data-industry="telecom" tabindex="0" role="button" aria-label="Select telecom industry">
+        <div class="sel-badge tel-badge" hidden>✓ Selected</div>
+        <div class="ic-stripe"></div>
+        <canvas class="ic-cv" id="cv-tel" width="140" height="140"></canvas>
+        <div class="ic-num">INDUSTRY 01 / TELECOMMUNICATIONS</div>
+        <div class="ic-icon">📡</div>
+        <h3 class="ic-name">Telecommunications</h3>
+        <p class="ic-desc">Predict subscriber churn using service usage, contract type, billing, and support history. Unlocks a cyberpunk signal dashboard.</p>
+        <div class="ic-tags"><span class="itag">MonthlyCharges</span><span class="itag">Tenure</span><span class="itag">Contract</span><span class="itag">TechSupport</span><span class="itag">InternetService</span></div>
+        <div class="ic-footer"><div class="ic-target">Target: <code>Churn</code> · churn.csv</div><div class="ic-arr">→</div></div>
+      </article>
+      <!-- BANKING -->
+      <article class="ic bank" id="card-bank" data-industry="bank" tabindex="0" role="button" aria-label="Select banking industry">
+        <div class="sel-badge bank-badge" hidden>✓ Selected</div>
+        <div class="ic-stripe"></div>
+        <canvas class="ic-cv" id="cv-bank" width="140" height="140"></canvas>
+        <div class="ic-num">INDUSTRY 02 / BANKING &amp; FINANCE</div>
+        <div class="ic-icon">🏦</div>
+        <h3 class="ic-name">Banking / Finance</h3>
+        <p class="ic-desc">Predict account closures using balance, credit score, product count, and activity metrics. Unlocks a finance intelligence dashboard.</p>
+        <div class="ic-tags"><span class="itag">CreditScore</span><span class="itag">Balance</span><span class="itag">Geography</span><span class="itag">IsActiveMember</span><span class="itag">NumOfProducts</span></div>
+        <div class="ic-footer"><div class="ic-target">Target: <code>Exited</code> · Churn_Modelling.csv</div><div class="ic-arr">→</div></div>
+      </article>
+    </div>
+
+    <!-- UPLOAD ZONE (revealed once industry chosen) -->
+    <section id="upload-section" hidden>
+      <div id="selected-banner" class="selected-banner"></div>
+
+      <div id="dropzone" class="dropzone">
+        <input type="file" id="file-input" accept=".csv" hidden>
+        <div class="dz-icon">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        </div>
+        <div class="dz-title">Drop your CSV here or <span class="dz-browse">browse files</span></div>
+        <div class="dz-sub">Max 20 MB · .csv only · training happens on your FastAPI backend</div>
+      </div>
+
+      <div id="file-preview" class="file-preview" hidden>
+        <div class="fp-meta" id="fp-meta"></div>
+        <div class="fp-table-wrap"><table id="fp-table"></table></div>
+      </div>
+
+      <div class="run-row">
+        <button id="btn-run" class="btn-primary btn-run" disabled>🔬 Run ANN Analysis →</button>
+        <button id="btn-demo" class="btn-ghost">▶ Try with demo data</button>
+        <button class="btn-ghost" data-goto="landing">← Back to Home</button>
+      </div>
+      <p class="api-hint">API endpoint: <code id="api-url-label"></code> — <button id="btn-api-config" class="link-btn">change</button></p>
+    </section>
+
+    <div class="run-row" id="select-nav-row">
+      <button class="btn-ghost" data-goto="landing">← Back to Home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ VIEW: LOADING ═══════════════════════ -->
+<div id="view-loading" class="view">
+  <div class="loading-wrap">
+    <div class="loading-head">
+      <div class="loading-icon" id="loading-icon">📡</div>
+      <div class="loading-title">Training ANN Model</div>
+      <div class="loading-sub">preprocessing · training · predicting...</div>
+    </div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="tdot red"></span><span class="tdot yellow"></span><span class="tdot green" id="tdot-accent"></span>
+        <span class="terminal-name">churnshield — ann_engine.py</span>
+      </div>
+      <div class="terminal-body" id="terminal-body"></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="loading-error" id="loading-error" hidden></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ VIEW: DASHBOARD ═══════════════════════ -->
+<div id="view-dashboard" class="view">
+  <div class="dash-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="dash-sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-mark">🛡️</div>
+        <div class="sb-logo-text">ChurnShield</div>
+      </div>
+      <div class="sb-section">Navigation</div>
+      <nav class="sb-nav">
+        <button class="sb-item active" data-nav="dashboard">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="sb-item" data-nav="customers">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span>Customers</span><span class="sb-badge" id="sb-badge-high">0</span>
+        </button>
+        <button class="sb-item" data-nav="analytics">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          <span>Model Analytics</span>
+        </button>
+        <button class="sb-item" data-nav="retention">
+          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+          <span>Retention Plans</span>
+        </button>
+      </nav>
+      <div class="sb-section">Tools</div>
+      <button class="sb-item" id="btn-new-dataset">📂 <span>New Dataset</span></button>
+      <div class="sb-model-card">
+        <div class="sb-model-lbl">Active Model</div>
+        <div class="sb-model-name" id="sb-model-name">ANN (3 Dense Layers)</div>
+        <div class="sb-model-live"><span class="live-dot"></span> Live predictions</div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+      <header class="dash-topbar">
+        <div>
+          <div class="tb-title">Intelligence Dashboard</div>
+          <div class="tb-sub" id="tb-sub">— customers</div>
+        </div>
+        <div class="tb-right">
+          <span class="tb-pill" id="tb-industry">📡 TELECOM</span>
+          <span class="tb-pill core" id="tb-model">🧠 ANN</span>
+        </div>
+      </header>
+
+      <div class="dash-content">
+        <!-- SUBVIEW: DASHBOARD -->
+        <section id="sub-dashboard" class="subview active">
+          <div class="kpi-row" id="kpi-row"></div>
+          <div class="tri-row">
+            <div class="panel"><div class="panel-lbl">Feature Importance</div><div id="panel-fi"></div></div>
+            <div class="panel"><div class="panel-lbl">Risk Segments</div><div id="panel-seg"></div></div>
+            <div class="panel"><div class="panel-lbl">Model Performance</div><div id="panel-perf"></div></div>
+          </div>
+          <div class="section-lbl">Top High-Risk Customers — open <b class="pc-text">Customers</b> in the sidebar for the full grid</div>
+          <div class="mini-cards" id="top-customers"></div>
+        </section>
+
+        <!-- SUBVIEW: CUSTOMERS -->
+        <section id="sub-customers" class="subview">
+          <div class="cust-head">
+            <div class="cust-title">Customer Risk Cards</div>
+            <div class="cust-count" id="cust-count">0 customers</div>
+            <select id="risk-filter" class="risk-filter" aria-label="Filter by risk level">
+              <option value="ALL">ALL RISK LEVELS</option>
+              <option value="HIGH">HIGH</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="LOW">LOW</option>
+            </select>
+            <div class="cust-hint">Click a card for full detail &amp; retention actions</div>
+          </div>
+          <div class="cust-grid" id="cust-grid"></div>
+          <div id="cust-detail" hidden></div>
+        </section>
+
+        <!-- SUBVIEW: ANALYTICS -->
+        <section id="sub-analytics" class="subview">
+          <div class="section-lbl">Model Health &amp; Full Analytics</div>
+          <div class="gauge-row">
+            <div class="chart-card" id="gauge-acc" style="height:180px"></div>
+            <div class="chart-card" id="gauge-prec" style="height:180px"></div>
+            <div class="chart-card" id="gauge-rec" style="height:180px"></div>
+            <div class="chart-card" id="gauge-f1" style="height:180px"></div>
+          </div>
+          <div class="chart-duo">
+            <div class="chart-card" id="chart-cm" style="height:300px"></div>
+            <div class="chart-card" id="chart-fi" style="height:300px"></div>
+          </div>
+          <div class="chart-card" id="chart-hist" style="height:240px"></div>
+        </section>
+
+        <!-- SUBVIEW: RETENTION -->
+        <section id="sub-retention" class="subview">
+          <div class="section-lbl">7 Strategic Churn Reduction Initiatives</div>
+          <div class="ret-grid" id="ret-grid"></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- API config modal -->
+<dialog id="api-modal" class="api-modal">
+  <form method="dialog">
+    <h3>API Endpoint</h3>
+    <p>URL of your running FastAPI backend (<code>uvicorn main:app --port 8000</code>).</p>
+    <input type="url" id="api-url-input" placeholder="http://localhost:8000" required>
+    <div class="modal-actions">
+      <button value="cancel" class="btn-ghost">Cancel</button>
+      <button value="save" id="api-save" class="btn-primary btn-small">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="js/fx.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

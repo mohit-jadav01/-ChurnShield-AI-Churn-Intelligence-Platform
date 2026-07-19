@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+pandas
+numpy
+scikit-learn
+python-multipart
+# Optional — enables the ANN (falls back to RandomForest if missing)
+tensorflow
